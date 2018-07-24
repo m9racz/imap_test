@@ -164,7 +164,7 @@ class imap_test(object):
             print(str(err))
             raise RuntimeError("Can't start IDLE mode:", err)
         try:    
-            check = self.server.idle_check(5)
+            check = self.server.idle_check(7)
             self.server.idle_done()
             self.server.close_folder()
             if check == []:
@@ -211,7 +211,7 @@ class imap_test(object):
             print("TEST - received MSG - FAILED")
             return False
         else:
-            print("TEST - received MSG - OK")
+            #print("TEST - received MSG - OK")
             return msg_ID
 
     def test_received_msg(self):
@@ -246,7 +246,7 @@ class imap_test(object):
         with no ID it send MSG and this msg copy to: folder_to if this folder doesn't exist it will create another one
         return name of folder where MSG was sent
         '''
-        if ID == None:
+        if ID is None:
             ID = self.test_received_msg()
 
         try:
@@ -297,47 +297,51 @@ class imap_test(object):
             return True
         self.server.close_folder()
 
-    def flagged_msg(self, ID = None, folder = 'INBOX'):
-        '''to specific msg in folder add flagged
+    def test_flag_msg(self, ID = None, folder = 'INBOX', flag = '\\Flagged'):
+        '''to specific msg in folder add specific flagged
+            '\\Flagged'
+            ["\\Flagged","$Completed"]
+            return all flags in MSG
         '''
-
-'''
-    #TEST6 ADD FLAG TO MSG
-    try:
-        server.select_folder(new_folder)
         try:
-            flag = server.add_flags(copy_msg_ID,'\Flagged')
+            self.server.select_folder(folder)
         except imaplib.IMAP4.error as err:
-            print("TEST6  - FLAGED MSG - FAILED")
+            raise RuntimeError("Unable to select this folder:", folder , err)
+        
+        try:
+            FlagResponse = self.server.add_flags(ID,flag)
+        except imaplib.IMAP4.error as err:
+            print("TEST - FLAGED MSG - FAILED (",flag," - add_flags)")
             print(str(err))
-        #flag = server.add_flags(copy_msg_ID,'\Answered')
-        try:
-            if b'\\Flagged' in flag[1]:
-                print("TEST6  - FLAGED MSG - OK")
-            else:
-                print("TEST6  - FLAGED MSG - FAILED")
-        except:
-            print("TEST6  - FLAGED MSG - FAILED")
-        server.close_folder
-    except imaplib.IMAP4.error as err:
-        print("TEST6  - FLAGED MSG - FAILED")
-        print(str(err))
 
-    #TEST7 DELETE FOLDER
-    try:
-        server.delete_folder(new_folder)
-        try:
-            server.select_folder(new_folder)
-        except imaplib.IMAP4.error as err:
-            print("TEST7  - delete folder - OK")
+        if flag.encode() in FlagResponse[ID]:
+                print("TEST - FLAGED MSG - OK",flag)
         else:
-            print("TEST7  - delete folder - FAILED")
+            print("TEST - FLAGED MSG - FAILED (",flag," -is not in flag list)")
+        self.server.close_folder()
+        return FlagResponse[ID]
+        
+    def test_delete_folder(self, folder = 'TEST_folder'):
+        '''to specific msg in folder add specific flagged
+            return all flags in MSG
+        '''
+        try:
+            self.server.delete_folder(folder)
+            try:
+                self.server.select_folder(folder)
+            except imaplib.IMAP4.error as err:
+                print("TEST  - delete folder - OK")
+                return True
+            else:
+                print("TEST  - delete folder - FAILED")
+                print(str(err))
+                return False
+        except imaplib.IMAP4.error as err:
+            print("TEST  - delete folder - FAILED")
             print(str(err))
-    except imaplib.IMAP4.error as err:
-        print("TEST7  - delete folder - FAILED")
-        print(str(err))
-
-
+            return False
+       
+'''
 
     server.close_folder
 
