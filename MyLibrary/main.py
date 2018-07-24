@@ -26,23 +26,25 @@ imap.time.sleep(2)
 msg_ID = connection.find_msg_by_subject(subject = msg['Subject'])
 connection.test_flag_msg(ID=msg_ID,flag="\\Flagged")
 msg_flag = connection.test_flag_msg(ID=msg_ID,flag="$Completed")
+connection.server.select_folder('INBOX')
+connection.server.delete_messages(msg_ID)
     #msg_flag = connection.test_flag_msg(ID=msg_ID,flag=["\\Flagged","$Completed"])
-
-#delete MSG
-connection.test_del_MSG(ID=msg_ID)
 
 #send & received msg
 msg_ID = connection.test_received_msg()
+
+#find MSG
 connection.test_search_msg()
-#connection.server.delete_messages(msg_ID)
+connection.server.select_folder('INBOX')
+connection.server.delete_messages(msg_ID)
 
+#Copy MSG
 
-#active_folder = connection.test_copy_msg(ID=msg_ID, folder_to=active_folder)
-#print(active_folder)
-
+connection.test_copy_msg(ID=msg_ID, folder_to=active_folder)
 connection.test_delete_folder(active_folder)
 
-
+#delete MSG
+#connection.test_del_MSG(ID=msg_ID)
 
 
 

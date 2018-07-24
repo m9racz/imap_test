@@ -246,7 +246,7 @@ class imap_test(object):
         with no ID it send MSG and this msg copy to: folder_to if this folder doesn't exist it will create another one
         return name of folder where MSG was sent
         '''
-        if ID is None:
+        if ID == None:
             ID = self.test_received_msg()
 
         try:
@@ -271,7 +271,11 @@ class imap_test(object):
             return False
         except:
             pass
-        return self.find_msg_by_subject(folder_to, subject.decode("utf-8"))
+
+        #if self.find_msg_by_subject(folder_to, subject.decode("utf-8")):
+            return folder_to
+        #else:
+        #    return False
 
     def test_del_MSG(self, ID = None, folder = 'INBOX'):
         '''try to delete MSG
