@@ -15,13 +15,32 @@ class imap_test(object):
         username:
         password:
     '''
-
     def __init__(self, host, username, password):
         """create server object with credentials"""
         self.host = host
         self.username = username
         self.password = password
         self.server = self.login()
+
+    def xatom(self, name, *args):
+        """
+        !!!override method without RFC compatibility
+        Allow simple extension commands
+                notified by server in CAPABILITY response.
+
+        Assumes command is legal in current state.
+
+        (typ, [data]) = <instance>.xatom(name, arg, ...)
+
+        Returns response appropriate to extension command `name'.
+        """
+        name = name.lower()
+        #if not name in self.capabilities:      # Let the server decide!
+        #    raise self.error('unknown extension command: %s' % name)
+        try:
+                self.server._imap._simple_command(name, *args)
+        except:
+                pass
 
     def login(self, ssl = False):
         '''try to login over imap to server with credential in attributes

@@ -6,6 +6,8 @@ pw = 'a'
 
 connection = imap.imap_test(host, username, pw)
 connection.server.send_IWconnector()
+#connection.xatom('X-ICEWARP-SERVER iwconnector')
+
 
 #=========== test scenario BASICS =====================
 #create folder
@@ -47,12 +49,19 @@ msg_ID = connection.test_copy_msg(ID=msg_ID, folder_to=active_folder)
 #===== uklid =====
 #connection.server.select_folder('INBOX')
 #connection.server.delete_messages(msg_ID_inbox)
-connection.test_delete_folder(active_folder)
+#connection.test_delete_folder(active_folder)
 
 #delete MSG
 #connection.test_del_MSG(ID=msg_ID)
 
-#=========== test scenario BASICS =====================
+#=========== test scenario ADVANCED =====================
+#create folder structure
+connection.create_folder_tree()
+
+xlist = connection.server.xlist_folders('','Inbox/%')
+
+
+
 
 
 

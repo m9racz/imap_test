@@ -18,9 +18,18 @@ pw = 'a'
 
 
 connection = imap.imap_test(host, username, pw)
-connection.server.send_IWconnector()
+connection.xatom('X-ICEWARP-SERVER iwconnector')
+#connection.server.send_IWconnector()
 
-connection.create_folder_tree()
+#connection.create_folder_tree()
+
+xlist = connection.server.xlist_folders('','Inbox/%')
+
+folders = ["INBOX/SUB_inbox2","INBOX/SUB_inbox1"]
+
+for folder in xlist:
+    if folder[2] in folders:
+        print(folder[2])
 
 
 #xlist = connection.server.xlist_folders('','Inbox/%')
