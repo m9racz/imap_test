@@ -104,7 +104,6 @@ class imap_test(object):
 
     def test_rename_folder(self, test_folder = "TEST_folder"):
         '''it rename folder to another one. returns name of new folder 
-        !!!! It doesn't create old folder!!!
         '''
         xlist = self.server.xlist_folders()
         if not self.test_name_folder(test_folder):
@@ -269,14 +268,10 @@ class imap_test(object):
             print("TEST - COPY MSG - FAILED")
             print(str(err))
             return False
-        except:
-            pass
-
-        #if self.find_msg_by_subject(folder_to, subject.decode("utf-8")):
-            return folder_to
-        #else:
-        #    return False
-
+        finally:
+            print("TEST - COPY MSG - OK")
+            return self.find_msg_by_subject(folder=folder_to,subject=subject.decode("utf-8"))
+      
     def test_del_MSG(self, ID = None, folder = 'INBOX'):
         '''try to delete MSG
         return True if is this MSG deleted...
@@ -344,7 +339,35 @@ class imap_test(object):
             print("TEST  - delete folder - FAILED")
             print(str(err))
             return False
-       
+
+    def create_folder_tree(self):
+        '''create folders and subfolders in mailbox
+        -INBOX  -sub_inbox1
+                -SUB_inbox2
+        -FOLDER1 -subfolder1-1
+                 -SUBfolder1-2
+        -folder2 -subfolder2-1
+                 -SUBfolder2-2
+        '''
+        folder_tree = ["FOLDER1","folder2","FOLDER1/subfolder1-1","FOLDER1/SUBfolder1-2","folder2/subfolder2-1","folder2/SUBfolder2-2","INBOX/sub_inbox1","INBOX/SUB_inbox2"]
+        for folder in folder_tree:
+            try:
+                self.server.create_folder(folder)
+            except imaplib.IMAP4.error as err:
+                if str(err) == "create failed: CREATE Mailbox already exists":
+                    print("folder %s already exists..." %folder)
+                    #raise RuntimeError("folder already exist: ", err)
+                    continue
+                else:
+                    print("ERROR: ", err)
+                return False
+                raise RuntimeError("unknow error: ", err)
+            except:
+                print("nejaka jina chyba:", err)
+                return False
+                raise RuntimeError("unknow error: ", err)
+
+
 '''
 
     server.close_folder
@@ -352,8 +375,6 @@ class imap_test(object):
 
     server.logout()
  '''
-
-
 
 #host = 'super-test.com'
 #username = 'alpha@super-test.com'
