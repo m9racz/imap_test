@@ -15,13 +15,32 @@ class imap_test(object):
         username:
         password:
     '''
-
     def __init__(self, host, username, password):
         """create server object with credentials"""
         self.host = host
         self.username = username
         self.password = password
         self.server = self.login()
+
+    def xatom(self, name, *args):
+        """
+        !!!override method without RFC compatibility
+        Allow simple extension commands
+                notified by server in CAPABILITY response.
+
+        Assumes command is legal in current state.
+
+        (typ, [data]) = <instance>.xatom(name, arg, ...)
+
+        Returns response appropriate to extension command `name'.
+        """
+        name = name.lower()
+        #if not name in self.capabilities:      # Let the server decide!
+        #    raise self.error('unknown extension command: %s' % name)
+        try:
+                self.server._imap._simple_command(name, *args)
+        except:
+                pass
 
     def login(self, ssl = False):
         '''try to login over imap to server with credential in attributes
@@ -104,7 +123,6 @@ class imap_test(object):
 
     def test_rename_folder(self, test_folder = "TEST_folder"):
         '''it rename folder to another one. returns name of new folder 
-        !!!! It doesn't create old folder!!!
         '''
         xlist = self.server.xlist_folders()
         if not self.test_name_folder(test_folder):
@@ -246,7 +264,7 @@ class imap_test(object):
         with no ID it send MSG and this msg copy to: folder_to if this folder doesn't exist it will create another one
         return name of folder where MSG was sent
         '''
-        if ID is None:
+        if ID == None:
             ID = self.test_received_msg()
 
         try:
@@ -269,10 +287,10 @@ class imap_test(object):
             print("TEST - COPY MSG - FAILED")
             print(str(err))
             return False
-        except:
-            pass
-        return self.find_msg_by_subject(folder_to, subject.decode("utf-8"))
-
+        finally:
+            print("TEST - COPY MSG - OK")
+            return self.find_msg_by_subject(folder=folder_to,subject=subject.decode("utf-8"))
+      
     def test_del_MSG(self, ID = None, folder = 'INBOX'):
         '''try to delete MSG
         return True if is this MSG deleted...
@@ -340,7 +358,58 @@ class imap_test(object):
             print("TEST  - delete folder - FAILED")
             print(str(err))
             return False
-       
+
+    def create_folder_tree(self):
+        '''create folders and subfolders in mailbox
+        -INBOX  -sub_inbox1
+                -SUB_inbox2
+        -FOLDER1 -subfolder1-1
+                 -SUBfolder1-2
+        -folder2 -subfolder2-1
+                 -SUBfolder2-2
+        '''
+        folder_tree = ["FOLDER1","folder2","FOLDER1/subfolder1-1","FOLDER1/SUBfolder1-2","folder2/subfolder2-1","folder2/SUBfolder2-2","INBOX/sub_inbox1","INBOX/SUB_inbox2"]
+        for folder in folder_tree:
+            try:
+                self.server.create_folder(folder)
+            except imaplib.IMAP4.error as err:
+                if str(err) == "create failed: CREATE Mailbox already exists":
+                    print("folder %s already exists..." %folder)
+                    #raise RuntimeError("folder already exist: ", err)
+                    continue
+                else:
+                    print("ERROR: ", err)
+                return False
+                raise RuntimeError("unknow error: ", err)
+            except:
+                print("nejaka jina chyba:", err)
+                return False
+                raise RuntimeError("unknow error: ", err)
+
+    def test_xlist_pattern(self,folder = "INBOX", pattern = "*", expected = ["INBOX/SUB_INBOX2","INBOX/SUB_INBOX1"]):
+        '''test if xlist return correct folders
+        '''
+        xlist = self.server.xlist_folders(folder,pattern)
+        count = 0
+        list_fail = []
+        xlist_name = []
+        
+        for folder in xlist:
+            xlist_name.append(folder[2].upper())
+        
+        for item in expected:
+            if item in xlist_name:
+                count += 1
+            else:
+                list_fail.append(item)
+        if count == len(expected):
+            print("TEST - Xlist pattern - OK")
+            return True
+        else:
+            print("TEST - Xlist pattern - FAIL ",list_fail," folder: ",folder, "pattern: ",pattern)
+
+
+
 '''
 
     server.close_folder
@@ -348,8 +417,6 @@ class imap_test(object):
 
     server.logout()
  '''
-
-
 
 #host = 'super-test.com'
 #username = 'alpha@super-test.com'
