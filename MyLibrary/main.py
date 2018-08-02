@@ -1,14 +1,14 @@
 import imap
-'''
+
 host = 'lenka.test.com'
 username = 'beta@lenka.test.com'
 pw = 'a'
 
 '''
 host = 'super-test.com'
-username = 'alpha@super-test.com'
+username = 'beta@super-test.com'
 pw = 'a'
-
+'''
 connection = imap.imap_test(host, username, pw)
 connection.server.send_IWconnector()
 #connection.xatom('X-ICEWARP-SERVER iwconnector')
@@ -69,6 +69,9 @@ connection.test_xlist_pattern(folder="",pattern="INBOX/%",expected=["INBOX/SUB_I
 connection.test_xlist_pattern(folder="FOLDER1",pattern="*",expected=["FOLDER1/SUBFOLDER1-1","FOLDER1/SUBFOLDER1-2"])
 connection.test_xlist_pattern(folder="",pattern="*",expected=["FOLDER1/SUBFOLDER1-1","FOLDER1/SUBFOLDER1-2","INBOX/SUB_INBOX2","INBOX/SUB_INBOX1","FOLDER1","FOLDER2","INBOX","FOLDER2/SUBFOLDER2-1","FOLDER2/SUBFOLDER2-2"])
 
+#test subscribe and unsubscribe folder
+connection.test_subscribe()
+connection.test_unsubscribe()
 
 
 connection.server.logout()

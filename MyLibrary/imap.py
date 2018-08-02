@@ -408,8 +408,53 @@ class imap_test(object):
         else:
             print("TEST - Xlist pattern - FAIL ",list_fail," folder: ",folder, "pattern: ",pattern)
 
+    def test_subscribe(self,folder = 'FOLDER1/SUBfolder1-2'):
+        '''subscribe folder (default = 'FOLDER1/SUBfolder1-2') return True if is this folder in LSUB list
+        '''
+        returncode = False
+        try:
+            self.server.subscribe_folder(folder)
+        except imaplib.IMAP4.error as err:
+            print("unknow ERROR", err)
+            return False
+            raise RuntimeError("unknow error: ", err)
+        except:
+            print("nejaka jina chyba:", err)
+            return False
+            raise RuntimeError("unknow error: ", err)
+        lsub = self.server.list_sub_folders()
+        for item in lsub:
+            if folder == item[2]:
+                print("TEST - subscribe folder - OK")
+                returncode = True
+        
+        if returncode == False:
+            print("TEST - subscribe folder - FAIL")
+        return returncode
 
-
+    def test_unsubscribe(self,folder = 'FOLDER1/SUBfolder1-2'):
+        '''unsubscribe folder (default = 'FOLDER1/SUBfolder1-2') return True if is not present this folder in LSUB list
+        '''
+        returncode = True
+        try:
+            self.server.unsubscribe_folder(folder)
+        except imaplib.IMAP4.error as err:
+            print("unknow ERROR", err)
+            return False
+            raise RuntimeError("unknow error: ", err)
+        except:
+            print("nejaka jina chyba:", err)
+            return False
+            raise RuntimeError("unknow error: ", err)
+        lsub = self.server.list_sub_folders()
+        for item in lsub:
+            if folder == item[2]:
+                print("TEST - unsubscribe folder - FAIL")
+                returncode = False
+        
+        if returncode == True:
+            print("TEST - unsubscribe folder - OK")
+        return returncode            
 '''
 
     server.close_folder

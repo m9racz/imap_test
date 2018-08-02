@@ -1,14 +1,14 @@
 import imap
 #import imaplib
-'''
+
 host = 'lenka.test.com'
-username = 'alpha@lenka.test.com'
+username = 'beta@lenka.test.com'
 pw = 'a'
 '''
 host = 'super-test.com'
 username = 'alpha@super-test.com'
 pw = 'a'
-
+'''
 #CONN = imaplib.IMAP4(host)
 #CONN.login(username, pw)
 
@@ -28,25 +28,22 @@ connection.server.send_IWconnector()
 #msg_ID = connection.find_msg_by_subject(subject ='Guida: Firma di dominio')
 #print(msg_ID)
 
-connection.server.select_folder('INBOX')
-msg = connection.server.fetch(13689,'ENVELOPE')
-print(msg)
-msg = connection.server.fetch(13688,'ENVELOPE')
-print(msg)
-'''
-xlist = connection.server.xlist_folders('','inbox/%')
-print(xlist)
+
+#xlist = connection.server.xlist_folders('','inbox/%')
+#print(xlist)
 #connection.server.subscribe_folder('FOLDER2')
 
-folder = 'aAa'
-connection.server.create_folder(folder)
-connection.server.subscribe_folder(folder)
-print(connection.server.list_sub_folders())
-connection.server.unsubscribe_folder(folder)
-print(connection.server.list_sub_folders())
-connection.server.delete_folder(folder)
+folder = 'FOLDER1/SUBfolder1-2'
+#connection.server.create_folder(folder)
+#print(connection.server.subscribe_folder(folder))
+#lsub = connection.server.list_sub_folders()
+#connection.test_unsubscribe()
 
-'''
+#print(connection.server.unsubscribe_folder(folder))
+print(connection.server.list_sub_folders())
+#connection.server.delete_folder(folder)
+
+
 
 
 
