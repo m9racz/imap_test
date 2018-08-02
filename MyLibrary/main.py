@@ -1,14 +1,14 @@
 import imap
-
+'''
 host = 'lenka.test.com'
 username = 'beta@lenka.test.com'
 pw = 'a'
 
 '''
 host = 'super-test.com'
-username = 'beta@super-test.com'
+username = 'alpha@super-test.com'
 pw = 'a'
-'''
+
 connection = imap.imap_test(host, username, pw)
 connection.server.send_IWconnector()
 #connection.xatom('X-ICEWARP-SERVER iwconnector')
