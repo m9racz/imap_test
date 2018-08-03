@@ -1,7 +1,7 @@
 import imap
 
 host = 'lenka.test.com'
-username = 'beta@lenka.test.com'
+username = 'alpha@lenka.test.com'
 pw = 'a'
 
 '''

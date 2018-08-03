@@ -1,3 +1,15 @@
+import jarvis2
+#import sele
+
+SD = jarvis2.SpeechDetector()
+SD.run()
+
+
+
+#web = sele.webcontrol()
+
+#web.play_music()
+
 '''
 import cv2
 import numpy as np
@@ -41,12 +53,12 @@ while(True):
     # Our operations on the frame come here
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
-    #laplacian = cv2.Laplacian(gray,cv2.CV_64F)
+    laplacian = cv2.Laplacian(gray,cv2.CV_64F)
     #edges = cv2.Canny(gray,100,200)
     #cv2.rectangle(gray,(384,0),(510,128),(200),3)
 
     # Display the resulting frame
-    cv2.imshow('frame',gray)
+    cv2.imshow('frame',frame)
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
 

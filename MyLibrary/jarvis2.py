@@ -11,6 +11,7 @@ from collections import deque
 import time
 import math
 
+
 """
 Written by Sophie Li, 2016
 http://blog.justsophie.com/python-speech-to-text-with-pocketsphinx/

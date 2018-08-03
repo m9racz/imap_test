@@ -2,8 +2,8 @@ import imap
 #import imaplib
 
 host = 'lenka.test.com'
-username = 'beta@lenka.test.com'
-pw = 'a'
+username = 'admin@lenka.test.com'
+pw = 'abc123'
 '''
 host = 'super-test.com'
 username = 'alpha@super-test.com'
@@ -40,17 +40,17 @@ folder = 'FOLDER1/SUBfolder1-2'
 #connection.test_unsubscribe()
 
 #print(connection.server.unsubscribe_folder(folder))
-print(connection.server.list_sub_folders())
+#print(connection.server.list_sub_folders())
 #connection.server.delete_folder(folder)
 
 
-
+print(connection.server.getacl('group_all@lenka.test.com/INBOX'))
 
 
 
 #connection.create_folder_tree()
-
-#xlist = connection.server.xlist_folders('','inbox/%')
+#connection.test_subscribe(folder='group_all@lenka.test.com/INBOX')
+#xlist = connection.server.xlist_folders('','*')
 #print(xlist)
 
 #connection.test_xlist_pattern(expected=["INBOX/SUB_INBOX2","INBOX/SUB_INBOX1"])
