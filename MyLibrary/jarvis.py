@@ -1,3 +1,4 @@
+'''
 import jarvis2
 #import sele
 
@@ -9,14 +10,20 @@ SD.run()
 #web = sele.webcontrol()
 
 #web.play_music()
-
 '''
+
+
+
+
 import cv2
 import numpy as np
 
-img = cv2.imread('c:\\temp\\marker2.jpg',0)
-img = cv2.medianBlur(img,5)
-cimg = cv2.cvtColor(img,cv2.COLOR_GRAY2BGR)
+img_origin = cv2.imread('c:\\temp\\marker2.jpg',1)
+gray = cv2.cvtColor(img_origin, cv2.COLOR_BGR2GRAY)
+
+img = cv2.medianBlur(gray,5)
+#cimg = cv2.cvtColor(img,cv2.COLOR_GRAY2BGR)
+cimg = img_origin
 
 
 
@@ -30,11 +37,20 @@ for i in circles[0,:]:
     # draw the center of the circle
     cv2.circle(cimg,(i[0],i[1]),2,(0,0,255),3)
 
+
+height, width, channels = cimg.shape
+print(height)
+print(width)
+print(channels)
+
+cv2.line(cimg,(1334,0),(1334,2500),(255,0,0),2)
+cv2.line(cimg,(0,1000),(2668,1000),(255,0,0),2)
+
 cv2.namedWindow('detected circles', cv2.WINDOW_NORMAL)#cv2.WINDOW_AUTOSIZE
 cv2.imshow('detected circles',cimg)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
-'''
+
 
 
 

@@ -1,12 +1,12 @@
 import imap
 
 host = 'lenka.test.com'
-username = 'alpha@lenka.test.com'
+username = 'beta@lenka.test.com'
 pw = 'a'
 
 '''
 host = 'super-test.com'
-username = 'beta@super-test.com'
+username = 'alpha@super-test.com'
 pw = 'a'
 '''
 connection = imap.imap_test(host, username, pw)
@@ -66,6 +66,12 @@ connection.create_folder_tree()
 #test XLIST returns
 connection.test_xlist_pattern(expected=["INBOX/SUB_INBOX2","INBOX/SUB_INBOX1"])
 connection.test_xlist_pattern(folder="",pattern="INBOX/%",expected=["INBOX/SUB_INBOX2","INBOX/SUB_INBOX1"])
+connection.test_xlist_pattern(folder="",pattern="inbox/%",expected=["INBOX/SUB_INBOX2","INBOX/SUB_INBOX1"])
+connection.test_xlist_pattern(folder="",pattern="Inbox/%",expected=["INBOX/SUB_INBOX2","INBOX/SUB_INBOX1"])
+connection.test_xlist_pattern(folder="INBOX/",pattern="*",expected=["INBOX/SUB_INBOX2","INBOX/SUB_INBOX1"])
+connection.test_xlist_pattern(folder="inbox/",pattern="*",expected=["INBOX/SUB_INBOX2","INBOX/SUB_INBOX1"])
+connection.test_xlist_pattern(folder="Inbox/",pattern="*",expected=["INBOX/SUB_INBOX2","INBOX/SUB_INBOX1"])
+
 connection.test_xlist_pattern(folder="FOLDER1",pattern="*",expected=["FOLDER1/SUBFOLDER1-1","FOLDER1/SUBFOLDER1-2"])
 connection.test_xlist_pattern(folder="",pattern="*",expected=["FOLDER1/SUBFOLDER1-1","FOLDER1/SUBFOLDER1-2","INBOX/SUB_INBOX2","INBOX/SUB_INBOX1","FOLDER1","FOLDER2","INBOX","FOLDER2/SUBFOLDER2-1","FOLDER2/SUBFOLDER2-2"])
 

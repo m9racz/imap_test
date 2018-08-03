@@ -1,14 +1,14 @@
 import imap
 #import imaplib
-
+'''
 host = 'lenka.test.com'
-username = 'admin@lenka.test.com'
-pw = 'abc123'
+username = 'beta@lenka.test.com'
+pw = 'a'
 '''
 host = 'super-test.com'
 username = 'alpha@super-test.com'
 pw = 'a'
-'''
+
 #CONN = imaplib.IMAP4(host)
 #CONN.login(username, pw)
 
@@ -29,11 +29,13 @@ connection.server.send_IWconnector()
 #print(msg_ID)
 
 
-#xlist = connection.server.xlist_folders('','inbox/%')
-#print(xlist)
+connection.server.rename_folder('aaa','čsr')
+
+#xlist = connection.server.xlist_folders('','*')
+#rint(xlist)
 #connection.server.subscribe_folder('FOLDER2')
 
-folder = 'FOLDER1/SUBfolder1-2'
+#folder = 'FOLDER1/SUBfolder1-2'
 #connection.server.create_folder(folder)
 #print(connection.server.subscribe_folder(folder))
 #lsub = connection.server.list_sub_folders()
@@ -44,7 +46,7 @@ folder = 'FOLDER1/SUBfolder1-2'
 #connection.server.delete_folder(folder)
 
 
-print(connection.server.getacl('group_all@lenka.test.com/INBOX'))
+#print(connection.server.getacl('group_all@lenka.test.com/INBOX'))
 
 
 
