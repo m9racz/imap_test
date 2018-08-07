@@ -48,8 +48,8 @@ delta_y = circle_y - (height/2)
 font = cv2.FONT_HERSHEY_SIMPLEX
 text_x = 'deltaX = ' + str(delta_x) + 'px'
 text_y = 'deltaY = ' + str(delta_y) + 'px'
-cv2.putText(cimg,text_x,(10,500), font, 3,(255,0,0),4,cv2.LINE_AA)
-cv2.putText(cimg,text_y,(10,600), font, 3,(255,0,0),4,cv2.LINE_AA)
+cv2.putText(cimg,text_x,(10,500), font, 2,(255,0,0),4,cv2.LINE_AA)
+cv2.putText(cimg,text_y,(10,550), font, 2,(255,0,0),4,cv2.LINE_AA)
 
 cv2.line(cimg,(width/2,0),((width/2),height),(0,0,255),2)
 cv2.line(cimg,(0,height/2),(width,height/2),(0,0,255),2)
@@ -66,18 +66,50 @@ ROI = cimg & mask
 ROI = ROI[circle[1] - circle_radius:circle[1] + circle_radius,
                             circle[0] - circle_radius:circle[0] + circle_radius, :]
 
-QR = pyzbar.decode(ROI)
-text_ID = 'ID: ' + str(QR[0][0])
-cv2.putText(cimg,text_ID,(10,400), font, 3,(255,0,0),4,cv2.LINE_AA)
+ROI_gray = cv2.cvtColor(ROI,cv2.COLOR_BGR2GRAY)
+ROI_edges = cv2.Canny(ROI_gray,50,150,apertureSize = 3)
 
+
+QR = pyzbar.decode(ROI)
+#text_ID = 'ID: ' + str(QR[0][0])
+#cv2.putText(cimg,text_ID,(10,450), font, 2,(255,0,0),4,cv2.LINE_AA)
+lines = cv2.HoughLines(ROI_edges,1,np.pi/180,100)
+for rho,theta in lines[0]:
+    a = np.cos(theta)
+    b = np.sin(theta)
+    x0 = a*rho
+    y0 = b*rho
+    x1 = int(x0 + 1000*(-b))
+    y1 = int(y0 + 1000*(a))
+    x2 = int(x0 - 1000*(-b))
+    y2 = int(y0 - 1000*(a))
+
+    cv2.line(cimg,(x1,y1),(x2,y2),(0,0,255),2)
+
+cv2.imwrite('c:\\temp\\houghlines3.jpg',img)
 '''
+lines = cv2.HoughLines(edges,1,np.pi/180,200)
+for rho,theta in lines[0]:
+    a = np.cos(theta)
+    b = np.sin(theta)
+    x0 = a*rho
+    y0 = b*rho
+    x1 = int(x0 + 1000*(-b))
+    y1 = int(y0 + 1000*(a))
+    x2 = int(x0 - 1000*(-b))
+    y2 = int(y0 - 1000*(a))
+
+    cv2.line(img,(x1,y1),(x2,y2),(0,0,255),2)
+
+cv2.imwrite('houghlines3.jpg',img)
+
  for obj in decodedObjects:
     print('Type : ', obj.type)
     print('Data : ', obj.data,'\n')
 '''
 #print(ROI.shape)
 
-cv2.namedWindow('detected circles', cv2.WINDOW_NORMAL)#cv2.WINDOW_AUTOSIZE
+cv2.namedWindow('detected circles', cv2.WINDOW_NORMAL)#cv2.WINDOW_AUTOSIZE / WINDOW_NORMAL
 #cv2.imshow('detected circles',ROI)
 cv2.imshow('detected circles',cimg)
 cv2.waitKey(0)
