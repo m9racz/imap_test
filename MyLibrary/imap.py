@@ -388,6 +388,7 @@ class imap_test(object):
 
     def test_xlist_pattern(self,folder = "INBOX", pattern = "*", expected = ["INBOX/SUB_INBOX2","INBOX/SUB_INBOX1"]):
         '''test if xlist return correct folders
+        expected write with capitals 
         '''
         xlist = self.server.xlist_folders(folder,pattern)
         count = 0
