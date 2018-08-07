@@ -57,7 +57,7 @@ class imap_test(object):
             raise RuntimeError("can't login: ", err)
 
     def test_name_folder(self, name):
-        '''return true if this folder already exists
+        '''return false if this folder already exists
         '''
         xlist = self.server.xlist_folders()
         for names in xlist:
@@ -151,14 +151,14 @@ class imap_test(object):
             print("Folder to rename doesn't exists...")
             return False                                                      #DOPSAT VLASTNI EXCEPTION!!!!
 
-    def send_test_msg(self):
+    def send_test_msg(self, to):
         '''send MSG with random subject to self
         return this message...
         '''
         test_msg = MIMEText('Testovaci zprava...')
         test_msg['Subject'] = 'TEST email c.: ' + str(random.randrange(10000,99999))
         test_msg['From'] = self.username
-        test_msg['To'] = self.username
+        test_msg['To'] = to
         try:
             s = smtplib.SMTP(self.host)
             try:
@@ -173,7 +173,7 @@ class imap_test(object):
             raise RuntimeError("can't setup connection to SMTP server:", err)
 
     def test_idle_mode(self):
-        self.send_test_msg()
+        self.send_test_msg(to=self.username)
         self.server.select_folder('INBOX')
         try:
             self.server.idle()
@@ -236,7 +236,7 @@ class imap_test(object):
         '''It send MSG and than try to received it...
         return msg_ID
         '''
-        test_msg = self.send_test_msg()
+        test_msg = self.send_test_msg(to=self.username)
         #test_msg['Subject']
         time.sleep(2)
         return self.find_msg_by_subject(subject = test_msg['Subject'])
@@ -454,7 +454,36 @@ class imap_test(object):
         
         if returncode == True:
             print("TEST - unsubscribe folder - OK")
-        return returncode            
+        return returncode    
+
+    def test_move_folder(self, from_folder = "FOLDER1/SUBfolder1-2", to_folder = "FOLDER2/SUBfolder1-2"):
+        '''
+        '''
+        xlist = self.server.xlist_folders()
+        if not self.test_name_folder(from_folder):
+            
+            try:
+                self.server.rename_folder(from_folder, to_folder)
+                try:
+                    self.server.select_folder(to_folder)
+                except imaplib.IMAP4.error as err:
+                    print("TEST - MOVE folder - FAILED")
+                    print(str(err))
+                    raise RuntimeError("can't open new folder: ", err)
+                else:
+                    if not self.test_name_folder(to_folder):
+                        print("TEST - MOVE folder - OK")
+                        self.server.close_folder()
+                        return True
+                    else:
+                        print("TEST - MOVE folder - FAILED  -new folder is not reachable")
+            except imaplib.IMAP4.error as err:
+                print("TEST - MOVE folder - FAILED")
+                print(str(err))
+                raise RuntimeError("MOVE folder failed: ", err)
+        else:
+            print("TEST - MOVE folder - FAILED  -Folder to rename doesn't exists...")
+            return False         
 '''
 
     server.close_folder

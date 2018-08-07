@@ -23,16 +23,18 @@ pw = 'a'
 
 connection = imap.imap_test(host, username, pw)
 connection.server.send_IWconnector()
-
-
+connection.send_test_msg(to='public-folders@super-test.com')
+connection.test_subscribe(folder="Public/INBOX")
 #msg_ID = connection.find_msg_by_subject(subject ='Guida: Firma di dominio')
 #print(msg_ID)
 
+#connection.server.select_folder('INBOX')
+#connection.server.rename_folder('inbox/aaa','inbox/podadresář2')
 
-connection.server.rename_folder('aaa','čsr')
+
 
 #xlist = connection.server.xlist_folders('','*')
-#rint(xlist)
+#print(xlist)
 #connection.server.subscribe_folder('FOLDER2')
 
 #folder = 'FOLDER1/SUBfolder1-2'

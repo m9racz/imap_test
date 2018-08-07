@@ -1,15 +1,14 @@
 '''
-import jarvis2
-#import sele
+#import jarvis2
+import sele
 
-SD = jarvis2.SpeechDetector()
-SD.run()
+#SD = jarvis2.SpeechDetector()
+#SD.run()
 
 
 
-#web = sele.webcontrol()
-
-#web.play_music()
+web = sele.webcontrol()
+web.play_music()
 '''
 
 
@@ -36,6 +35,8 @@ for i in circles[0,:]:
     cv2.circle(cimg,(i[0],i[1]),i[2],(0,255,0),2)
     # draw the center of the circle
     cv2.circle(cimg,(i[0],i[1]),2,(0,0,255),3)
+    circle_x = i[0]
+    circle_y = i[1]
 
 
 height, width, channels = cimg.shape
@@ -43,8 +44,16 @@ print(height)
 print(width)
 print(channels)
 
-cv2.line(cimg,(1334,0),(1334,2500),(255,0,0),2)
-cv2.line(cimg,(0,1000),(2668,1000),(255,0,0),2)
+delta_x = circle_x - (width/2)
+delta_y = circle_y - (height/2)
+font = cv2.FONT_HERSHEY_SIMPLEX
+text_x = 'deltaX = ' + str(delta_x) + 'px'
+text_y = 'deltaY = ' + str(delta_y) + 'px'
+cv2.putText(cimg,text_x,(10,500), font, 3,(255,0,0),4,cv2.LINE_AA)
+cv2.putText(cimg,text_y,(10,600), font, 3,(255,0,0),4,cv2.LINE_AA)
+
+cv2.line(cimg,(width/2,0),((width/2),height),(0,0,255),2)
+cv2.line(cimg,(0,height/2),(width,height/2),(0,0,255),2)
 
 cv2.namedWindow('detected circles', cv2.WINDOW_NORMAL)#cv2.WINDOW_AUTOSIZE
 cv2.imshow('detected circles',cimg)

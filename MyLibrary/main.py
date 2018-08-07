@@ -29,7 +29,7 @@ active_folder = connection.test_rename_folder(active_folder)
 connection.test_idle_mode()
 
 #FLAG - flagged and Completed
-msg = connection.send_test_msg()
+msg = connection.send_test_msg(to=username)
 imap.time.sleep(2)
 msg_ID = connection.find_msg_by_subject(subject = msg['Subject'])
 connection.test_flag_msg(ID=msg_ID,flag="\\Flagged")
@@ -71,13 +71,24 @@ connection.test_xlist_pattern(folder="",pattern="Inbox/%",expected=["INBOX/SUB_I
 connection.test_xlist_pattern(folder="INBOX/",pattern="*",expected=["INBOX/SUB_INBOX2","INBOX/SUB_INBOX1"])
 connection.test_xlist_pattern(folder="inbox/",pattern="*",expected=["INBOX/SUB_INBOX2","INBOX/SUB_INBOX1"])
 connection.test_xlist_pattern(folder="Inbox/",pattern="*",expected=["INBOX/SUB_INBOX2","INBOX/SUB_INBOX1"])
-
 connection.test_xlist_pattern(folder="FOLDER1",pattern="*",expected=["FOLDER1/SUBFOLDER1-1","FOLDER1/SUBFOLDER1-2"])
 connection.test_xlist_pattern(folder="",pattern="*",expected=["FOLDER1/SUBFOLDER1-1","FOLDER1/SUBFOLDER1-2","INBOX/SUB_INBOX2","INBOX/SUB_INBOX1","FOLDER1","FOLDER2","INBOX","FOLDER2/SUBFOLDER2-1","FOLDER2/SUBFOLDER2-2"])
 
 #test subscribe and unsubscribe folder
 connection.test_subscribe()
 connection.test_unsubscribe()
+connection.send_test_msg(to='public-folders@super-test.com')
+connection.test_subscribe(folder="Public/INBOX")
+connection.test_unsubscribe(folder="Public/INBOX")
+connection.test_subscribe(folder="Public/inbox")
+connection.test_unsubscribe(folder="Public/inbox")
+connection.test_subscribe(folder="Public/Inbox")
+connection.test_unsubscribe(folder="Public/Inbox")
+
+#test Move subfolder to another subfolder
+connection.test_move_folder()
+connection.test_move_folder(from_folder = "folder2/SUBfolder2-2", to_folder = "FOLDER1/podadresář2-2")
+
 
 
 connection.server.logout()
