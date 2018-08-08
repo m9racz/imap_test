@@ -17,7 +17,7 @@ import pyzbar.pyzbar as pyzbar
 import cv2
 import numpy as np
 
-img_origin = cv2.imread('c:\\temp\\marker2a.jpg',1)
+img_origin = cv2.imread('c:\\temp\\marker45.jpg',1)
 gray = cv2.cvtColor(img_origin, cv2.COLOR_BGR2GRAY)
 
 img = cv2.medianBlur(gray,5)
@@ -71,10 +71,12 @@ ROI_edges = cv2.Canny(ROI_gray,50,150,apertureSize = 3)
 
 
 QR = pyzbar.decode(ROI)
-#text_ID = 'ID: ' + str(QR[0][0])
-#cv2.putText(cimg,text_ID,(10,450), font, 2,(255,0,0),4,cv2.LINE_AA)
+text_ID = 'ID: ' + str(QR[0][0])
+cv2.putText(cimg,text_ID,(10,450), font, 2,(255,0,0),4,cv2.LINE_AA)
 lines = cv2.HoughLines(ROI_edges,1,np.pi/180,100)
+
 for rho,theta in lines[0]:
+    angle = ((180/np.pi)*theta)-180
     a = np.cos(theta)
     b = np.sin(theta)
     x0 = a*rho
@@ -83,10 +85,10 @@ for rho,theta in lines[0]:
     y1 = int(y0 + 1000*(a))
     x2 = int(x0 - 1000*(-b))
     y2 = int(y0 - 1000*(a))
-
-    cv2.line(cimg,(x1,y1),(x2,y2),(0,0,255),2)
-
-cv2.imwrite('c:\\temp\\houghlines3.jpg',img)
+    cv2.line(ROI,(x1,y1),(x2,y2),(0,0,255),2)
+text_angle = 'uhel: ' + str(round(angle))
+cv2.putText(cimg,text_angle,(10,600), font, 2,(255,0,0),4,cv2.LINE_AA)
+cv2.imwrite('c:\\temp\\houghlines3.jpg',ROI)
 '''
 lines = cv2.HoughLines(edges,1,np.pi/180,200)
 for rho,theta in lines[0]:
