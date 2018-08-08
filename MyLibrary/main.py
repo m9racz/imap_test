@@ -1,12 +1,10 @@
 import imap
-'''
-host = 'lenka.test.com'
-username = 'alpha@lenka.test.com'
-pw = 'a'
 
-'''
-host = 'super-test.com'
-username = 'alpha@super-test.com'
+host = 'lenka.test.com'
+#host = 'super-test.com'
+#host = 'win2k8x32.test.com'
+
+username = 'beta@' + host
 pw = 'a'
 
 connection = imap.imap_test(host, username, pw)

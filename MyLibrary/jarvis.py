@@ -24,6 +24,36 @@ img = cv2.medianBlur(gray,5)
 #cimg = cv2.cvtColor(img,cv2.COLOR_GRAY2BGR)
 cimg = img_origin
 
+# Convert BGR to HSV
+hsv = cv2.cvtColor(img_origin, cv2.COLOR_BGR2HSV)
+# define range of blue color in HSV
+lower_blue = np.array([110,50,50])
+upper_blue = np.array([130,255,255])
+# Threshold the HSV image to get only blue colors
+mask = cv2.inRange(hsv, lower_blue, upper_blue)
+# Bitwise-AND mask and original image
+res = cv2.bitwise_and(img_origin,img_origin, mask= mask)
+
+cv2.namedWindow('detected circles', cv2.WINDOW_NORMAL)#cv2.WINDOW_AUTOSIZE / WINDOW_NORMAL
+#cv2.imshow('detected circles',ROI)
+cv2.imshow('detected circles',img_origin)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+'''
+    # Convert BGR to HSV
+    hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+
+    # define range of blue color in HSV
+    lower_blue = np.array([110,50,50])
+    upper_blue = np.array([130,255,255])
+
+    # Threshold the HSV image to get only blue colors
+    mask = cv2.inRange(hsv, lower_green, upper_green)
+
+    # Bitwise-AND mask and original image
+    res = cv2.bitwise_and(frame,frame, mask= mask)
+'''
+
 
 
 circles = cv2.HoughCircles(img,cv2.HOUGH_GRADIENT,1,500,param1=50,param2=100,minRadius=100,maxRadius=0)
@@ -46,8 +76,8 @@ height, width, channels = cimg.shape
 delta_x = circle_x - (width/2)
 delta_y = circle_y - (height/2)
 font = cv2.FONT_HERSHEY_SIMPLEX
-text_x = 'deltaX = ' + str(delta_x) + 'px'
-text_y = 'deltaY = ' + str(delta_y) + 'px'
+text_x = 'deltaX: ' + str(delta_x) + 'px'
+text_y = 'deltaY: ' + str(delta_y) + 'px'
 cv2.putText(cimg,text_x,(10,500), font, 2,(255,0,0),4,cv2.LINE_AA)
 cv2.putText(cimg,text_y,(10,550), font, 2,(255,0,0),4,cv2.LINE_AA)
 
