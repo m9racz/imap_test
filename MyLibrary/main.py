@@ -1,7 +1,7 @@
 import imap
 
-host = 'lenka.test.com'
-#host = 'super-test.com'
+#host = 'lenka.test.com'
+host = 'super-test.com'
 #host = 'win2k8x32.test.com'
 
 username = 'beta@' + host
