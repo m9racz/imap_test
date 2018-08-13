@@ -1,4 +1,4 @@
-'''
+
 #import jarvis2
 import sele
 
@@ -9,10 +9,10 @@ import sele
 
 web = sele.webcontrol()
 web.play_music()
+
+
+
 '''
-
-
-
 import pyzbar.pyzbar as pyzbar
 import cv2
 import numpy as np
@@ -38,17 +38,7 @@ res = cv2.bitwise_and(img_origin,img_origin, mask= mask)
 #cv2.imshow('detected circles',img_origin)
 #cv2.waitKey(0)
 #cv2.destroyAllWindows()
-'''
-    # Convert BGR to HSV
-    hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
-    # define range of blue color in HSV
-    lower_blue = np.array([110,50,50])
-    upper_blue = np.array([130,255,255])
-    # Threshold the HSV image to get only blue colors
-    mask = cv2.inRange(hsv, lower_green, upper_green)
-    # Bitwise-AND mask and original image
-    res = cv2.bitwise_and(frame,frame, mask= mask)
-'''
+
 circles = cv2.HoughCircles(img,cv2.HOUGH_GRADIENT,1,500,param1=50,param2=100,minRadius=100,maxRadius=0)
 
 circles = np.uint16(np.around(circles))
@@ -126,7 +116,7 @@ except:
 
 
 
-'''
+
 lines = cv2.HoughLines(edges,1,np.pi/180,200)
 for rho,theta in lines[0]:
     a = np.cos(theta)
@@ -145,7 +135,7 @@ cv2.imwrite('houghlines3.jpg',img)
  for obj in decodedObjects:
     print('Type : ', obj.type)
     print('Data : ', obj.data,'\n')
-'''
+
 #print(ROI.shape)
 
 cv2.namedWindow('detected circles', cv2.WINDOW_NORMAL)#cv2.WINDOW_AUTOSIZE / WINDOW_NORMAL
@@ -153,7 +143,7 @@ cv2.namedWindow('detected circles', cv2.WINDOW_NORMAL)#cv2.WINDOW_AUTOSIZE / WIN
 cv2.imshow('detected circles',cimg)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
-
+'''
 
 
 
