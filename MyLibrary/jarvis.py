@@ -8,7 +8,7 @@ import sele
 
 
 web = sele.webcontrol()
-web.play_music()
+web.play_music(what="ACDC", typ='video')
 
 
 

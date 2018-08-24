@@ -65,6 +65,15 @@ class imap_test(object):
                 return False
         return True
 
+    def test_name_folder_ncs(self, name):
+        '''return false if this folder already exists
+        '''
+        xlist = self.server.xlist_folders()
+        for names in xlist:
+            if str(names[2]).upper() == name.upper():
+                return False
+        return True
+
     def test_create_folder(self, test_folder = "TEST_folder"):
         '''try to create folder, if already exists it create another one and test it... return name of tested folder
         '''
@@ -152,7 +161,7 @@ class imap_test(object):
             return False                                                      #DOPSAT VLASTNI EXCEPTION!!!!
 
     def send_test_msg(self, to):
-        '''send MSG with random subject to self
+        '''send MSG with random subject
         return this message...
         '''
         test_msg = MIMEText('Testovaci zprava...')
@@ -461,7 +470,7 @@ class imap_test(object):
         '''
         '''
         xlist = self.server.xlist_folders()
-        if not self.test_name_folder(from_folder):
+        if not self.test_name_folder_ncs(from_folder):
             
             try:
                 self.server.rename_folder(from_folder, to_folder)
@@ -472,7 +481,7 @@ class imap_test(object):
                     print(str(err))
                     raise RuntimeError("can't open new folder: ", err)
                 else:
-                    if not self.test_name_folder(to_folder):
+                    if not self.test_name_folder_ncs(to_folder):
                         print("TEST - MOVE folder - OK")
                         self.server.close_folder()
                         return True

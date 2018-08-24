@@ -1,8 +1,10 @@
 import imap
 
-#host = 'lenka.test.com'
-host = 'super-test.com'
+host = 'lenka.test.com'
+#host = 'super-test.com'
 #host = 'win2k8x32.test.com'
+#host = 'win12.test.com'
+
 
 username = 'beta@' + host
 pw = 'a'
@@ -24,7 +26,7 @@ connection.server.delete_folder('TEST_folder')
 active_folder = connection.test_rename_folder(active_folder)
 
 #IDLE mode of server
-connection.test_idle_mode()
+#connection.test_idle_mode()
 
 #FLAG - flagged and Completed
 msg = connection.send_test_msg(to=username)
@@ -75,7 +77,8 @@ connection.test_xlist_pattern(folder="",pattern="*",expected=["FOLDER1/SUBFOLDER
 #test subscribe and unsubscribe folder
 connection.test_subscribe()
 connection.test_unsubscribe()
-connection.send_test_msg(to='public-folders@super-test.com')
+PublicMail = "public-folders@" + host
+connection.send_test_msg(to=PublicMail)
 connection.test_subscribe(folder="Public/INBOX")
 connection.test_unsubscribe(folder="Public/INBOX")
 connection.test_subscribe(folder="Public/inbox")

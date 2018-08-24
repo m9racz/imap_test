@@ -1,14 +1,14 @@
 import imap
 #import imaplib
-'''
+
 host = 'lenka.test.com'
-username = 'beta@lenka.test.com'
+username = 'xxx@lenka.test.com'
 pw = 'a'
 '''
 host = 'super-test.com'
 username = 'alpha@super-test.com'
 pw = 'a'
-
+'''
 #CONN = imaplib.IMAP4(host)
 #CONN.login(username, pw)
 
@@ -22,16 +22,17 @@ pw = 'a'
 
 
 connection = imap.imap_test(host, username, pw)
-connection.server.send_IWconnector()
-connection.send_test_msg(to='public-folders@super-test.com')
-connection.test_subscribe(folder="Public/INBOX")
+#connection.server.send_IWconnector()
+#connection.send_test_msg(to=username)
+#connection.test_subscribe(folder="Public/INBOX")
 #msg_ID = connection.find_msg_by_subject(subject ='Guida: Firma di dominio')
 #print(msg_ID)
 
 #connection.server.select_folder('INBOX')
 #connection.server.rename_folder('inbox/aaa','inbox/podadresář2')
 
-
+connection.test_search_msg()
+connection.server.select_folder('INBOX')
 
 #xlist = connection.server.xlist_folders('','*')
 #print(xlist)

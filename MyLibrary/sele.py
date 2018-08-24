@@ -9,13 +9,23 @@ class webcontrol(object):
         if browser == 'Chrome':
             self.driver = webdriver.Chrome()
 
-    def play_music(self, what = 'ACDC'):
+    def play_music(self, what = 'ACDC', typ= 'video'):
+        '''
+        what = searchfield
+        type = playlist / video / channel
+        '''
         self.driver.get('http://youtube.com')
         elm = self.driver.find_element_by_name('search_query').send_keys(what)
         self.driver.find_element_by_id('search-icon-legacy').click()
         time.sleep(3)
-        #elm = self.driver.find_element_by_id('dismissable').click()     
-        elm = self.driver.find_element_by_xpath("//div[@id='contents']//ytd-video-renderer[2]//div[@id='dismissable']//ytd-thumbnail[1]//a[@id='thumbnail']").click()
+        #elm = self.driver.find_element_by_id('dismissable').click()  
+        xpath = "//div[@id='contents']//ytd-"+typ+"-renderer[2]//div[@id='dismissable']//ytd-thumbnail[1]//a[@id='thumbnail']"
+        print(xpath)
+        elm = self.driver.find_element_by_xpath(xpath).click()
+        
+        #elm = self.driver.find_element_by_xpath("//div[@id='contents']//ytd-video-renderer[2]//div[@id='dismissable']//ytd-thumbnail[1]//a[@id='thumbnail']").click()
+        
+        
         #WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH, "//div[@id='contents']//ytd-video-renderer[2]//div[@id='dismissable']//ytd-thumbnail[1]//a[@id='thumbnail']"))).click()
         #ytd-playlist-renderer
         #ytd-video-renderer
