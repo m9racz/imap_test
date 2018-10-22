@@ -5,9 +5,13 @@ host = 'lenka.test.com'
 #host = 'win2k8x32.test.com'
 #host = 'win12.test.com'
 
-
-username = 'beta@' + host
+user = 'delta'
 pw = 'a'
+
+
+
+username = user + '@' + host
+
 
 connection = imap.imap_test(host, username, pw)
 connection.server.send_IWconnector()
@@ -26,7 +30,7 @@ connection.server.delete_folder('TEST_folder')
 active_folder = connection.test_rename_folder(active_folder)
 
 #IDLE mode of server
-#connection.test_idle_mode()
+connection.test_idle_mode()
 
 #FLAG - flagged and Completed
 msg = connection.send_test_msg(to=username)
@@ -64,15 +68,30 @@ msg_ID = connection.test_copy_msg(ID=msg_ID, folder_to=active_folder)
 connection.create_folder_tree()
 
 #test XLIST returns
+
+#XLIST "INBOX" "*"
 connection.test_xlist_pattern(expected=["INBOX/SUB_INBOX2","INBOX/SUB_INBOX1"])
+
+#XLIST "" "Inbox/%"
+# + case sensitivity
 connection.test_xlist_pattern(folder="",pattern="INBOX/%",expected=["INBOX/SUB_INBOX2","INBOX/SUB_INBOX1"])
 connection.test_xlist_pattern(folder="",pattern="inbox/%",expected=["INBOX/SUB_INBOX2","INBOX/SUB_INBOX1"])
 connection.test_xlist_pattern(folder="",pattern="Inbox/%",expected=["INBOX/SUB_INBOX2","INBOX/SUB_INBOX1"])
+
+#XLIST "INBOX/" "*"
+connection.test_xlist_pattern(folder="INBOX/",pattern="*",expected=["INBOX/SUB_INBOX2","INBOX/SUB_INBOX1"])
 #connection.test_xlist_pattern(folder="INBOX/",pattern="*",expected=["INBOX/SUB_INBOX2","INBOX/SUB_INBOX1"])
 #connection.test_xlist_pattern(folder="inbox/",pattern="*",expected=["INBOX/SUB_INBOX2","INBOX/SUB_INBOX1"])
 #connection.test_xlist_pattern(folder="Inbox/",pattern="*",expected=["INBOX/SUB_INBOX2","INBOX/SUB_INBOX1"])
+
+#XLIST "FOLDER1" "*"
 connection.test_xlist_pattern(folder="FOLDER1",pattern="*",expected=["FOLDER1/SUBFOLDER1-1","FOLDER1/SUBFOLDER1-2"])
+#XLIST "" "*"
 connection.test_xlist_pattern(folder="",pattern="*",expected=["FOLDER1/SUBFOLDER1-1","FOLDER1/SUBFOLDER1-2","INBOX/SUB_INBOX2","INBOX/SUB_INBOX1","FOLDER1","FOLDER2","INBOX","FOLDER2/SUBFOLDER2-1","FOLDER2/SUBFOLDER2-2"])
+
+#XLIST "" "%"
+connection.test_xlist_pattern(folder="",pattern="%",expected=["FOLDER1","FOLDER2","INBOX"])
+
 
 #test subscribe and unsubscribe folder
 connection.test_subscribe()
@@ -85,6 +104,9 @@ connection.test_subscribe(folder="Public/inbox")
 connection.test_unsubscribe(folder="Public/inbox")
 connection.test_subscribe(folder="Public/Inbox")
 connection.test_unsubscribe(folder="Public/Inbox")
+
+#TEST SV-10141  shared account list via %
+
 
 #test Move subfolder to another subfolder
 connection.test_move_folder()

@@ -1,6 +1,6 @@
 import imap
 #import imaplib
-
+'''
 host = 'lenka.test.com'
 username = 'xxx@lenka.test.com'
 pw = 'a'
@@ -8,7 +8,10 @@ pw = 'a'
 host = 'super-test.com'
 username = 'alpha@super-test.com'
 pw = 'a'
-'''
+
+
+
+
 #CONN = imaplib.IMAP4(host)
 #CONN.login(username, pw)
 
@@ -21,7 +24,7 @@ pw = 'a'
 
 
 
-connection = imap.imap_test(host, username, pw)
+#connection = imap.imap_test(host, username, pw)
 #connection.server.send_IWconnector()
 #connection.send_test_msg(to=username)
 #connection.test_subscribe(folder="Public/INBOX")
@@ -31,8 +34,8 @@ connection = imap.imap_test(host, username, pw)
 #connection.server.select_folder('INBOX')
 #connection.server.rename_folder('inbox/aaa','inbox/podadresář2')
 
-connection.test_search_msg()
-connection.server.select_folder('INBOX')
+#connection.test_search_msg()
+#connection.server.select_folder('INBOX')
 
 #xlist = connection.server.xlist_folders('','*')
 #print(xlist)

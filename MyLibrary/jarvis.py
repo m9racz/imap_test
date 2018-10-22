@@ -1,4 +1,5 @@
 
+'''
 #import jarvis2
 import sele
 
@@ -143,7 +144,7 @@ cv2.namedWindow('detected circles', cv2.WINDOW_NORMAL)#cv2.WINDOW_AUTOSIZE / WIN
 cv2.imshow('detected circles',cimg)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
-'''
+
 
 
 
